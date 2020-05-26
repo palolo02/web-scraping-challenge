@@ -120,12 +120,14 @@ def scrape_info():
     })
 
     fact_table.set_index("Description", inplace = True)
-
+    
     # Creating the html Table
     table_html = fact_table.to_html()
+    table_html = table_html.replace("dataframe","table table-dark table-striped table-hover")
+    table_html= table_html.replace('\n',"")
     print(table_html)
     # Cleaning the table
-    #table_html= table_html.replace('\n',"")
+    
 
     #### ============================================================================
     browser = open_browser()
@@ -172,7 +174,7 @@ def scrape_info():
     }
 
     print(newItem)
-    # Persist data into MongoDB
-    collection.insert_one(newItem)
+    # Persist data into MongoDB (update the existing one)
+    collection.update({},newItem,upsert=True)
 
     return newItem

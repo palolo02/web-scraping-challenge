@@ -3,6 +3,7 @@
 # Bootcamp
 # Versión 1.0.0 May-24-2020
 # Versión 1.0.1 May-24-2020
+# Versión 1.0.2 May-24-2020
 
 
 #################################################
@@ -21,8 +22,7 @@ import scrape_mars as sm
 
 app = Flask(__name__)
 
-db = "news_db"
-url = f'mongodb://localhost:27017/{db}'
+url = f'mongodb://localhost:27017/news_db'
 
 #################################################
 # Flask Routes
@@ -35,14 +35,15 @@ def home():
     # Define database and collection
     db = client.news_web
     collection = db.items
+    print(collection)
     mars_data = collection.find_one()
     return render_template("index.html", data = mars_data)
 
 @app.route("/scrape")
 def scrape():
     # Add Mongo Validation
-    data = sm.scrape_info()
-    return data
+    sm.scrape_info()
+    return redirect("/", code=302)
 
 
 
